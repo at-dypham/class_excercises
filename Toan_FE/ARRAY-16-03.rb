@@ -54,9 +54,12 @@ ex2_arr.injectinit(0) { |sum, x| sum + x  }
 
 
 #exercise 3: arrays = [1..100]
-arrays = [1..100]
-(1..1000).inject { |sum , n| 
-	sum.to_i+n if n%3 == 0
- }
+a= (1..100).inject{|sum, n| n%3 == 0 ? sum+=n : sum}
+puts a
+#    HASHES
 
+months = Hash.new 
+puts months
 
+months = Hash.new months(months: 2)
+puts months
