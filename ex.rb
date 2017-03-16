@@ -6,11 +6,11 @@ a.map{|item| puts item}
 
 b = [1,2,3,4,5,6,7,8,9,10]
 puts b.inject{|sum,item| 
-	sum.to_i+item if item%2==0
+	item%2==0 ? sum+=item : sum
 }
 
 
 #ex3
 puts (1..100).inject{|sum,n|
-	sum.to_i+n if n%3==0
+	n%3==0 ? sum+=n : sum
 }
