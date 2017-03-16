@@ -4,4 +4,5 @@ require 'benchmark'
 a=[nil]
 b = [1,2,3]
 puts b.values_at(1)
+puts b.last
 
