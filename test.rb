@@ -1,3 +1,6 @@
-a="a"
-b=[1,2,3]
-puts "#{b(0)}"
+class Object
+	def hello
+		puts "hello"
+	end
+end
+nil.hello
