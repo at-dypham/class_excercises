@@ -9,6 +9,7 @@ hash1 = {
 hash_array = []
 hash1.map { |key,value|
   h = {}
+  #binding.pry
   if value.class.to_s == "Hash"
     value.map { |subkey, subvalue|
       h[subkey] = subvalue
@@ -19,5 +20,6 @@ hash1.map { |key,value|
     hash_array << h  if key.to_s == "name"
   end
 }
-puts hash_array 
+puts hash_array
+puts hash_array.class 
 puts hash_array[0].class   
