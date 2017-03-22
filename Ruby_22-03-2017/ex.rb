@@ -6,7 +6,7 @@ h = { "name" => "trang",
     name: {"name2" => "abcdef",
       name2: "1234",
       name22: {sublv3: "sub3",
-        sub4: "sub444"
+        sub4: "sub4"
       }
       },
       sub2: 123
@@ -23,20 +23,12 @@ h = { "name" => "trang",
 def dequy(h)
   result = []
   h.map{|k, v|
-    if v.is_a?(Hash)
-      result << dequy(v)
-    else
-      result << { k => v}
-    end
+    result.push  (v.is_a?(Hash)) ? dequy(v) : { k => v}
   }
   return result
 end
 result = []
 h.map{|k, v|
-  if v.is_a?(Hash)
-   result << dequy(v)
- else
-  result << { k => v}
-end
+ result.push  (v.is_a?(Hash)) ? dequy(v) : { k => v}
 }
 puts result
