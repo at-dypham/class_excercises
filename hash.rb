@@ -6,13 +6,18 @@ hash1 = {
     name: "anh"
   } 
 }
+hash_array = []
 hash1.map { |key,value|
-  # binding.pry
+  h = {}
   if value.class.to_s == "Hash"
     value.map { |subkey, subvalue|
-      puts "#{subkey} #{subvalue}" if subkey.to_s == "name"
+      h[subkey] = subvalue
+      hash_array << h  if subkey.to_s == "name"
     }
   else
-    puts "#{key} #{value}" if key.to_s == "name"
+    h[key] = value
+    hash_array << h  if key.to_s == "name"
   end
-}    
+}
+puts hash_array 
+puts hash_array[0].class   
