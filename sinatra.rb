@@ -19,7 +19,7 @@ post '/say_something' do
   File.open("info.txt", 'w') { |file| file.write(@name + ", " + @say_something) }
   
   #Read file
-  fileObj = File.new("info.txt", "r")
+  fileObj = File.open("info.txt", "r")
   @message = fileObj.gets
   # while (line = fileObj.gets)
   #   @message = line
