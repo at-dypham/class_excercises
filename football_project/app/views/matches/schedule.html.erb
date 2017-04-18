@@ -1,0 +1,94 @@
+<table class="schedule table table-bordered">
+	<caption style="text-align: center;"><h1><%= @tournament.name %></h1></caption>
+	<tbody>
+		<tr>
+			<td style="widtd: 5%;">STT</td>
+			<td>Group</td>
+			<td colspan="3">Match</td>
+			<td widtd="25%;">Time</td>
+		</tr>
+		<% unless @matches.blank?
+			@matches.each_with_index do |match, index|
+				%>
+				<td><%= index + 1 %></td>
+				<td><%= match.group_name %></td>
+				<td><%= match.teamA.team_name %></td>
+				<td style="widtd: 25%;">
+					<% if match.score.blank? %>
+						<%= form_for match  %>
+					<form action="/matchs/update_score/<%= match.id %>" method="post">
+						<input type="hidden" name="_method" value="put">
+						<div class="form-group">
+							<input type="number" class="form-control" min="0" name="score_teamA" value="" style="width: 100px; display: inline;" required>
+							<span class="glyphicon glyphicon-minus"></span>
+							<input type="number"  class="form-control" min="0" name="score_teamB" value="" style="width: 100px; display: inline;" required>
+						</div>
+						<input class = "btn btn-info" type="submit" name="submit" value="Update Score">
+					</form>
+					<% else %>
+					<span><%= match.score %></span>
+					<% end %>
+				</td>
+				<td><%= match.teamB.team_name %></td>
+				<td id="time-<%= match.id %>">
+					<% if match.time.blank? %>
+					<form action="/" method="post" class="form_time">
+						<input type="hidden" name="_method" value="put">
+						<input type="hidden" name="id" value="<%= match.id %>">
+						<div class='col-sm-7'>
+							<div class='input-group date datetimepicker'>
+								<input type='text' name="time" class="form-control" required />
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</div>
+						<input class="btn btn-info update_time" type="submit" name="time-<%= match.id %>" value="Update Time">
+					</form>
+					<% else %>
+					<%= match.time %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+			<% end %>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+		$(function () {
+			$('.datetimepicker').datetimepicker({
+				format: 'DD/MM/YYYY hh:mm',
+			});
+		});
+		$(".update_time").click(function() {
+			var time = ( $(this).parent().find('input[type="text"]').val());
+			current = moment().format('DD/MM/YYYY hh:mm');
+			if (new Date(time) < new Date(current)) {
+				alert("Vui lòng chọn thời gian > thời gian hiện tại");
+				return false;
+			} else{
+				return true;
+			}
+		});
+
+		$(".form_time").submit(function(ev){
+			var time = ($(this).find('input[type="text"]').val());
+			var id = ($(this).find('input[name="id"]').val());
+			ev.preventDefault();
+			$.ajax({
+				url: '/matchs/ajax',
+				method: 'PUT',
+				cache: false,
+				data: {
+					match_id: id,
+					match_time: time
+				},
+				success: function(data){
+					$("#time-" + id).html(data);
+				},
+				error: function (){
+					alert('Có lỗi xảy ra');
+				}
+			}); 
+		});
+	</script>

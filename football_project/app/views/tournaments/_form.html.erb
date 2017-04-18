@@ -1,0 +1,39 @@
+<div id = "modal" class = "modal fade" role = "dialog">
+	<div class = "modal-dialog modal-xs">
+		<div class = "modal-content">
+			<%= form_for @tournament do |f| %>
+			<div class="form-group">
+				<%= f.text_field :name, class: "form-control", placeholder: "tournament's name" %>
+			</div>
+			<%= render partial: 'shared/error_validates', locals: {obj: obj} %>
+			<div class="form-group">
+				<%= f.submit "Add", class: "btn btn-primary" %>
+				<%= f.button "Close", class: "btn btn-default", data: {dismiss: "modal"} %>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#modal').on('show.bs.modal', function getvalue (event) {
+		var button = $(event.relatedTarget); 
+		var recipient = button.data('whatever');
+		var data = eval('(' + recipient + ')');
+		if ( data != null ){
+			var $form = $(this).find("form");
+			var $input = $form.find("input[name='_method']");
+			if ( data.Method === 'post' ) {
+				$form.attr("action", '/tournaments');
+				$input.remove();
+			} else {
+				$form.find("input[type='submit']").val("Edit")
+				$form.attr("action", '/tournaments/' + data.Id);
+				$form.find("input[name='authenticity_token']").val(data.Token);
+				$("#tournament_name").val(data.Name);
+				if($input.size() == 0){
+					$form.prepend('<input type="hidden" name="_method" value="put" />');
+				}
+			}
+		}
+	});
+</script>

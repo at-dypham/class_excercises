@@ -1,0 +1,89 @@
+<nav>
+	<ul>
+		<li>
+			<%= link_to schedule_tournament_path(@tournament), class: "btn btn-info" do %>
+				<i class="fa fa-times">Kết quả thi đấu</i>
+			<% end %>
+		</li>
+		<li>
+			<%= link_to ranking_tournament_path(@tournament), class: "btn btn-info" do %>
+				<i class="fa fa-times">Bảng xếp hạng</i>
+			<% end %>
+		</li>
+	</ul>
+</nav>
+<%= render partial: 'shared/form', locals: {obj: @group} %>
+<% binding.pry %>
+<%= render partial: 'shared/show_messages', locals: {flash: flash} %>
+<table class="table table-bordered" style="width: 80%;margin-left: 100px;">
+	<caption style="text-align: center;font-size: 30px;">
+		<%= @tournament.name %>
+		<%= content_tag(:button, "ADD GROUP", type: "button", class: "btn btn-info",
+     data: {toggle: "modal", target: "#modal", whatever: "{Method: 'post', obj: 'group'}"}, style: "float:right;" )%>
+	</caption>
+	<thead>
+		<th style="width: 5%;">#</th>
+		<th style="">Group</th>
+		<th>Teams</th>
+		<th width="16%;"></th>
+	</thead>
+	<tbody>
+		<% unless @groups.blank? %>
+		<% @groups.each_with_index do |group, index| %>
+		<tr>
+			<td><%= index + 1 %></td>
+			<td><%= group.name %></td>
+			<td>
+				<% if group.tournament_teams.blank? %>
+					<%= form_for @tournament_team, url: add_group_path(group) do |f| %>
+						<%= f.collection_check_boxes(:id, @teams, :id, :name) do |b| %>
+							<%= b.label class:"form-group", style:"width: 150px;float: left;" do%>
+								<%=b.check_box + b.text%>
+							<% end %>
+						<% end %>
+						<div style="clear: both;" class="clr"></div>
+						<div class="form-group">
+							<%= f.submit "Add", class: "btn btn-default", id: "addGroup", name: "submit", value: "Add to Group"%>
+						</div>
+					<% end %>
+				<% else %>
+					<% group.tournament_teams.each do |team| %>
+					<div class="form-group" style="width: 150px;float: left;">
+						<%=team.team_name%>
+					</div>
+				<% end %>
+		<% end %>
+			</td>
+			<td>
+				<% data = "{Method: 'put', Id: '#{group.id}', Token: '#{form_authenticity_token}', 
+				Name: '#{group.name}',obj: 'group'}"  %>
+				<%= content_tag(:button, "Edit", type: "button", class: "btn btn-info",
+        data: {toggle: "modal", target: "#modal", whatever: "#{data}"}, style: "float:right;" )%>
+				<%= link_to (group), method: :delete,
+				data: {confirm: "Are you sure ?"}, remote: true, class: "btn btn-danger" do %>
+				<i class="fa fa-times">Delete</i>
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+		<% end %>
+	</tbody>
+</table>
+<script type="text/javascript">
+	$('#addGroup').click(function(){
+		var checkedAtLeastOne = 0;
+		$a =  $(this).parent().parent()
+		$a.find('input[type="checkbox"]').each(function() {
+			if ($(this).is(":checked")) {
+				checkedAtLeastOne += 1;
+			}
+		});
+		if (checkedAtLeastOne == 4){
+			return confirm('Bạn có chắc chắn muốn thêm các đội trên vào group');
+		} else {
+			alert('Vui lòng chọn đủ 4 đội để add vào group');
+			return false;
+		}
+
+	});
+</script>

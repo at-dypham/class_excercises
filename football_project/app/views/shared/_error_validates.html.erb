@@ -1,0 +1,10 @@
+<% unless obj.errors.blank? %>
+	<script>
+		$(document).ready(function(){
+			$('#modal').modal('show');
+		});
+	</script>
+	<% obj.errors.messages[:name].each do |msg| %>
+		<p class="alert-danger"> <%= msg %></p>
+	<% end %>
+<% end %>
