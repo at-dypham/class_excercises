@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     end
   end
   resources :matches do
-
+    collection do
+      patch 'update_score'
+      patch 'update_time'
+    end
   end
   resources :penalties
   resources :tournament_teams

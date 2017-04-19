@@ -13,6 +13,7 @@ class TournamentTeamsController < ApplicationController
         tournament_team.save ? flash[:success] = "Thêm thành công" : flash[:danger] = "Thêm thất bại"
       end
     end
+    @group.add_matches
     redirect_to :back
   end
 
