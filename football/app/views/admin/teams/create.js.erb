@@ -1,0 +1,6 @@
+<% binding.pry %>
+<% if flash[:success] %>
+  $("body").append("<h1><%= escape_javascript(flash[:success]) %></h1>")
+<% else %>
+  $("body").append("<h1><%= escape_javascript(flash[:danger]) %></h1>")
+<% end %>

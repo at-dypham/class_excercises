@@ -1,0 +1,6 @@
+<%= form_for @team, url: admin_teams_path, method: :post, remote: true do |f| %>
+  <%= f.text_field :name %>
+  <%= f.text_area :description %>
+  <%= f.submit "Create" %>
+<% end %>
+<div class="notice"></div>
