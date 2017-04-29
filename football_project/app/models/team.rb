@@ -3,6 +3,8 @@ class Team < ApplicationRecord
   has_many :groups, through: :tournament_teams
   has_many :tournaments, through: :groups
 
+
+
   validates :name, :presence => {:message => "Vui lòng nhập tên giải đấu!!!" }
   validates :name, :uniqueness => { :message => 'Tên giải đấu đã tồn tại!!!'}
   validates :name, length: { minimum: 2, message: 'tên giải đấu phải có ít nhất 2 ký tự!!!' }

@@ -1,9 +1,9 @@
-<%= render :partial => 'shared/form', locals: {obj: @tournament} %>
+<%= render :partial => 'form', locals: {obj: @tournament} %>
 <%= render partial: 'shared/show_messages', locals: {flash: flash} %>
 <table class="table table-bordered" id="">
   <caption style="text-align: center;">TOURNAMENTS LIST
     <%= content_tag(:button, "ADD TOURNAMENT", type: "button", class: "btn btn-info",
-     data: {toggle: "modal", target: "#modal", whatever: "{Method: 'post', obj: 'tournament'}"}, style: "float:right;" )%>
+    data: {toggle: "modal", target: "#modal", whatever: "{Method: 'post', obj: 'tournament'}"}, style: "float:right;")%>
   </caption>
   <thead>
     <tr>
@@ -20,12 +20,12 @@
       <td><%= tournament.name %></td>
       <td>
         <% data = "{Method: 'put', Id: '#{tournament.id}', Token: '#{form_authenticity_token}', 
-        Name: '#{tournament.name}', obj: 'tournament'}"  %>
+        Name: '#{tournament.name}', num_of_teams: #{tournament.num_of_teams}, obj: 'tournament'}"  %>
         <%= link_to tournament, class: "btn btn-info" do %>
         <i class="fa fa-times">Details</i>
         <% end %>
         <%= content_tag(:button, "Edit", type: "button", class: "btn btn-info",
-        data: {toggle: "modal", target: "#modal", whatever: "#{data}"}, style: "float:right;" )%>
+        data: {toggle: "modal", target: "#modal", whatever: "#{data}"})%>
         <%= link_to tournament, method: :delete,
         data: {confirm: "Are you sure ?"}, remote: true, class: "btn btn-danger" do %>
         <i class="fa fa-times">Delete</i>

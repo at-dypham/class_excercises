@@ -9,14 +9,22 @@ Rails.application.routes.draw do
   end
   resources :matches do
     collection do
+      patch 'add_score'
       patch 'update_score'
-      patch 'update_time'
+      patch 'add_time'
     end
   end
   resources :penalties
-  resources :tournament_teams
+  resources :tournament_teams do
+    member do
+      put 'set_rank'
+    end
+  end
   resources :tournaments do
     member do
+      get 'submit_matches'
+      post 'submit'
+      get 'quarterfinals' => 'matches#quarterfinals'
       get 'schedule' => 'matches#schedule'
       get 'ranking' => 'tournament_teams#ranking'
     end

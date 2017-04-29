@@ -1,79 +1,33 @@
-<table class="schedule table table-bordered">
-	<caption style="text-align: center;"><h1><%= @tournament.name %></h1></caption>
-	<tbody>
-		<tr>
-			<td style="widtd: 5%;">STT</td>
-			<td>Group</td>
-			<td colspan="3">Match</td>
-			<td widtd="25%;">Time</td>
-		</tr>
-		<% unless @matches.blank? %>
-			<% @matches.each_with_index do |match, index| %>
-				<tr>
-					<td><%= index + 1 %></td>
-					<td><%= match.group_name %></td>
-					<td><%= match.teamA.team_name %></td>
-					<td style="widtd: 25%;" id = "score-<%= match.id %>">
-						<% if match.score.blank? %>
-							<%= form_for match, url: update_score_matches_path, remote: true do |f| %>
-								<div class="form-group">
-									<%= f.text_field :team_A_id, type: "number", class: "form-control", value: "", required: true,
-									min: 0, style: "width: 70px; display: inline;" %>
-									<span class="glyphicon glyphicon-minus"></span>
-									<%= f.text_field :team_B_id, type: "number", class: "form-control", value: "", min: 0, 
-									required: true, style: "width: 70px; display: inline;" %>
-									<%= f.hidden_field :id, value: match.id %>
-									<%= f.button "submit", class: "btn btn-info" do %>
-										<span class="glyphicon glyphicon-ok"> </span>
-									<% end %>
-								</div>
-							<% end %>
-						<% else %>
-							<span><%= match.score %></span>
-						<% end %>
-					</td>
-					<td><%= match.teamB.team_name %></td>
-					<td id="time-<%= match.id %>">
-						<% if match.time.blank? %>
-							<%= form_for match, url: update_time_matches_path do |f| %>
-								<%= f.hidden_field :id, value: match.id %>
-								<div class="col-sm-7">
-									<div class='input-group date datetimepicker'>
-										<%= f.text_field :time, class: "form-control", required: true %>
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar"></span>
-										</span>
-									</div>
-								</div>
-								<%= content_tag :button , type: "submit", class: "btn btn-info update_time" do %>
-									<span class="glyphicon glyphicon-ok"> </span>
-								<% end %>
-							<% end %>
-						<% else %>
-							<%= match.time %>
-						<% end %>
-					</td>
-				</tr>
-			<% end %>
-	  <% end %>
-	</tbody>
-</table>
-	<script type="text/javascript">
-		$(function () {
-			$('.datetimepicker').datetimepicker({
-				format: 'MM/DD/YYYY hh:mm',
-			});
+<h1>
+	<%= link_to @tournament.name, @tournament  %>
+	<%= link_to submit_matches_tournament_path(@tournament), class: "btn btn-info",  style: "float: right;",
+	data: {confirm: "Bạn có chắc chắn cập nhật tỷ sô"} do %>
+		<i class="fa fa-times">Submit Results</i>
+	<% end %>
+</h1>
+<div id="messages">
+	<%= render partial: 'shared/show_messages', locals: {flash: flash} %>
+</div>
+<%= render partial: 'group', collection: @tournament.groups %>
+<script type="text/javascript">
+	$(function () {
+		$('.datetimepicker').datetimepicker({
+			format: 'MM/DD/YYYY hh:mm',
 		});
-		$(".update_time").click(function() {
-			var time = ( $(this).parent().find('input[type="text"]').val());
-			var current = moment().format('MM/DD/YYYY hh:mm');
-			var date = new Date($.now());
-			var date1 = new Date(time);
-			if (new Date(time) <= new Date(current)) {
-				alert("Vui lòng chọn thời gian > thời gian hiện tại");
-				return false;
-			} else{
-				return true;
-			}
-		});
-	</script>
+	});
+	$(".update_time").click(function() {
+		var time = ( $(this).parent().find('input[type="text"]').val());
+		var current = moment().format('MM/DD/YYYY hh:mm');
+		var date = new Date($.now());
+		var date1 = new Date(time);
+		if (new Date(time) <= new Date(current)) {
+			alert("Vui lòng chọn thời gian > thời gian hiện tại");
+			return false;
+		} else{
+			return true;
+		}
+	});
+</script>
+<script type="text/javascript">
+	<%= render(:partial => 'update_match', :formats => [:js]) %>
+</script>

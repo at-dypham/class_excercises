@@ -1,0 +1,11 @@
+<%= form_for match, url: update_score_match_path(match), remote: true do |f| %>
+	<div class="form-group" style="float: left; margin-left: 40px;">
+		<%= f.text_field :team_A_score, type: "number", class: "form-control", required: true,
+		min: 0, style: "width: 70px; display: inline;", disabled: true %>
+		<span class="glyphicon glyphicon-minus"></span>
+		<%= f.text_field :team_B_score, type: "number", class: "form-control", min: 0, 
+		required: true, style: "width: 70px; display: inline;", disabled: true %>
+	</div>
+	<div style="float: left; width: 40px; height: 49px; margin-left: 7px;" 
+	class ="edit-score"></div>
+<% end %>

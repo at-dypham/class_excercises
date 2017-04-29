@@ -1,5 +1,19 @@
 <% unless flash.blank? %>
-	<% flash.each do |key, value| %>
-		<div class="alert alert-<%= key %> col-md-4"><%= value %></div>
-	<% end %>
+	<div class="col-xs-6 col-md-4" id="notice">
+			<% flash.each do |key, messages| %>
+				<% if messages.is_a? Array %>
+					<div class="alert alert-<%= key %>" id="<%= key %>">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						<% messages.each do |message| %>
+							<p><%= message %></p>
+						<% end %>
+					</div>
+				<% else %>
+					<div class="alert alert-<%= key %>">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						<p><%= messages %></p>
+					</div>
+				<% end %>
+			<% end %>
+	</div>
 <% end %>

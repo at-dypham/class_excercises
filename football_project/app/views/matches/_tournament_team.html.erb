@@ -1,0 +1,4 @@
+<tr>
+	<td><%= tournament_team.team_name %></td>
+	<%= render partial: 'match', collection: tournament_team.matches, locals: {tournament_team: tournament_team } %>
+</tr>

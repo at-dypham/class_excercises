@@ -5,23 +5,28 @@ class GroupsController < ApplicationController
 
  def create
   @group = Group.new group_params
-  @group.tournament_id = params[:id]
-  if @group.save
-    flash[:success] = "Thêm thành công"
+  @tournament = @group.tournament
+  if @tournament.check_full_groups
+    flash[:danger] = "Số group đã đạt tối đa!!!"
     redirect_to :back
   else
-    flash[:danger] = @group.errors.messages[:name]
-    redirect_to "/tournaments/#{params[:id]}"
+    if @group.save
+      flash[:success] = "Thêm thành công"
+      redirect_to :back
+    else
+      flash[:danger] = @group.errors.full_messages
+      redirect_to tournament_path @group.tournament_id
+    end
   end
 end
 
 def update
-  if @group.update_attributes(group_params)
+  if @group.update(group_params)
     flash[:success] = "Sửa thành công"
-    redirect_to "/groups"
+    redirect_to :back
   else
     get_groups()
-    render 'index'
+    render 'tournaments/index'
   end
 end
 
@@ -43,7 +48,7 @@ end
 
 private
 def group_params
-  params.require(:group).permit :name
+  params.require(:group).permit :name, :tournament_id
 end
 
 def get_groups

@@ -1,0 +1,24 @@
+<tr>
+	<td><%= group.name %></td>
+		<% if (group.get_teams_with_rank 1).size > 1 %>
+			<td>
+				<%= collection_select :first_teams, "", (group.get_teams_with_rank 1), :id, :team_name, 
+					options = {prompt: true}, html_options = {class: 'form-control', required: true} %>
+			</td>
+			<td>
+					<%= collection_select :second_teams, "", (group.get_teams_with_rank 1), :id, :team_name, 
+					options = {prompt: true}, html_options = {class: 'form-control', required: true} %>
+		<% else %>
+			<td>
+				<span><%= (group.get_teams_with_rank 1).first.team_name %></span>
+			</td>
+					<td>
+						<% if (group.get_teams_with_rank 2).size > 1 %>
+							<%= collection_select :second_teams, "", (group.get_teams_with_rank 2), :id, :team_name, 
+							options = {prompt: true}, html_options = {class: 'form-control', required: true} %>
+						<% else %>
+							<span><%= (group.get_teams_with_rank 2).first.team_name %></span>
+						<% end %>
+					</td>
+		<% end %>
+</tr>

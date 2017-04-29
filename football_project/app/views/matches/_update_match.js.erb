@@ -1,0 +1,31 @@
+
+	$(".score").on('dblclick', 'span', function (){
+		$td = $(this).parent()
+		$input_name = $(this).parent().find('input[name="input_score"]');
+		$input_name.attr("type", 'text');
+		$(this).remove();
+	});
+
+	$(".input_score").change(function() {
+		var score = $(this).val();
+		var id = $(this).parent().find('input[name="id"]').val();
+		var action = $(this).parent().find('input[name="action"]').val();
+		var url;
+		if( /^[0-9]+-[0-9]+$/.test(score) ){
+				if( action == 0){
+					url = "<%= add_score_matches_path %>"
+				}else{
+					url = "<%= update_score_matches_path %>"
+				}
+			  $.ajax({
+    			url: url,
+   			  type: "PATCH",
+   			  data: {
+   			  	id: id,
+   			  	score: score
+   			  },
+  			})
+		}else{
+			alert("Vui lòng nhập đúng định dạng tỷ số, ví dụ: 0-0 ")
+		}
+	});

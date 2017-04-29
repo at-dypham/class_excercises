@@ -1,0 +1,21 @@
+var $hover = $(".edit-score");
+var $td;
+$hover.hover(
+  function() {
+  	if($(this).is(':empty')){
+			$td = $("#score-<%= match.id %>");
+  		var $div = $("<div>" +
+			+ "</div>");
+  		$div.append("<span class='btn btn-info glyphicon glyphicon-edit' style='margin-right: 10px;' id ='edit_score'> </span>");
+  		$(this).append($div);
+  		$div.on('click', 'span', function () {
+				$td.empty();
+				$td.append('<%= j(render partial: "form_update_score", locals: {match: match}) %>');
+		});
+  	}
+  },
+  function() {
+  	$(this).empty();
+	}
+);
+

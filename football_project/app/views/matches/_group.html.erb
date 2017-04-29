@@ -1,0 +1,40 @@
+<table class="schedule table table-bordered">
+	<% tournament_teams =  group.tournament_teams.order(:id) %>
+	<caption>
+		<%= group.name %>
+	</caption>
+	<tbody>
+		<tr>
+			<td></td>
+			<% tournament_teams.each_with_index do |team| %>
+				<td><%= team.team_name %></td>
+			<% end %>
+		</tr>
+		<% tournament_teams.each_with_index do |tournament_team, index| %>
+			<tr>
+				<td><%= tournament_team.team_name %></td>
+				<% tournament_teams.each_with_index do |team, index_team| %>
+					<% if index_team == tournament_teams.index(tournament_team) %>
+						<td><span class="glyphicon glyphicon-minus"></span></td>
+					<% else %>
+						<% match = tournament_team.matches_A.current_match(team.id, 0).first %>
+						<td width="20%;" id="score-<%= match.id %>" class="score">
+								<%= hidden_field_tag(:id, match.id) %>
+								<% if match.score.blank? %>
+									<%= hidden_field_tag(:action, 0) %>
+									<%= hidden_field_tag(:input_score, "", class: "input_score form-control") %>
+									<span class="form-control btn btn-default" style=""></span>
+								<% else %>
+									<%= hidden_field_tag(:action, 1) %>
+									<%= hidden_field_tag(:input_score, match.score, class: "input_score form-control") %>
+									<span class="form-control btn btn-default" style="">
+										<%= match.score %>
+									</span>
+								<% end %>
+						</td>
+					<% end %>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

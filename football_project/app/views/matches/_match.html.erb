@@ -1,0 +1,40 @@
+<% binding.pry %>
+<% unless @matches.blank? %>
+<% @matches.each_with_index do |match, index| %>
+<tr>
+	<td><%= index + 1 %></td>
+	<td><%= match.group_name %></td>
+	<td><%= match.teamA.team_name %></td>
+	<td style="width: 25%;" id = "score-<%= match.id %>">
+		<% if match.team_A_score.blank? %>
+		<%= render partial: 'form_update_score', locals: {match: match} %>
+		<% else %>
+		<%= render partial: 'score', locals: {match: match} %>
+		<script type="text/javascript">
+			<%= render(:partial => 'score_handle', :formats => [:js], locals: {match: match} ) %>
+		</script>
+		<% end %>
+	</td>
+	<td><%= match.teamB.team_name %></td>
+	<td id="time-<%= match.id %>">
+		<% if match.time.blank? %>
+		<%= form_for match, url: update_time_match_path(match), remote: true do |f| %>
+		<div class="col-sm-7">
+			<div class='input-group date datetimepicker'>
+				<%= f.text_field :time, class: "form-control", required: true %>
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		</div>
+		<%= content_tag :button , type: "submit", class: "btn btn-info update_time" do %>
+		<span class="glyphicon glyphicon-ok"> </span>
+		<% end %>
+		<% end %>
+		<% else %>
+		<%= match.time %>
+		<% end %>
+	</td>
+</tr>
+<% end %>
+<% end %>

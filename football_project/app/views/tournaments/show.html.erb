@@ -10,15 +10,23 @@
 				<i class="fa fa-times">Bảng xếp hạng</i>
 			<% end %>
 		</li>
+		<li>
+			<%= link_to quarterfinals_tournament_path(@tournament), class: "btn btn-info" do %>
+				<i class="fa fa-times">Vòng tứ kết</i>
+			<% end %>
+		</li>
 	</ul>
 </nav>
-<%= render partial: 'shared/form', locals: {obj: @group} %>
 <%= render partial: 'shared/show_messages', locals: {flash: flash} %>
+<%= render partial: 'form-group', locals: {obj: @group, tournament: @tournament} %>
 <table class="table table-bordered" style="width: 80%;margin-left: 100px;">
 	<caption style="text-align: center;font-size: 30px;">
 		<%= @tournament.name %>
-		<%= content_tag(:button, "ADD GROUP", type: "button", class: "btn btn-info",
-     data: {toggle: "modal", target: "#modal", whatever: "{Method: 'post', obj: 'group'}"}, style: "float:right;" )%>
+		<span>(<%= @tournament.num_of_teams %> teams)</span>
+    <% if @tournament.groups.size < (@tournament.num_of_teams / 4) %>
+			<%= content_tag(:button, "ADD GROUP", type: "button", class: "btn btn-info",
+	    data: {toggle: "modal", target: "#modal-group", whatever: "{Method: 'post', obj: 'group'}"}, style: "float:right;" )%>
+    <% end %>
 	</caption>
 	<thead>
 		<th style="width: 5%;">#</th>
@@ -36,7 +44,7 @@
 				<% if group.tournament_teams.blank? %>
 					<%= form_for @tournament_team, url: add_group_path(group) do |f| %>
 						<%= f.collection_check_boxes(:id, @teams, :id, :name) do |b| %>
-							<%= b.label class:"form-group", style:"width: 150px;float: left;" do%>
+							<%= b.label class:"form-group", style:"width: 120px;float: left;" do%>
 								<%=b.check_box + b.text%>
 							<% end %>
 						<% end %>
@@ -47,7 +55,7 @@
 					<% end %>
 				<% else %>
 					<% group.tournament_teams.each do |team| %>
-					<div class="form-group" style="width: 150px;float: left;">
+					<div class="form-group" style="width: 120px;float: left;">
 						<%=team.team_name%>
 					</div>
 				<% end %>
@@ -57,15 +65,22 @@
 				<% data = "{Method: 'put', Id: '#{group.id}', Token: '#{form_authenticity_token}', 
 				Name: '#{group.name}',obj: 'group'}"  %>
 				<%= content_tag(:button, "Edit", type: "button", class: "btn btn-info",
-        data: {toggle: "modal", target: "#modal", whatever: "#{data}"}, style: "float:right;" )%>
-				<%= link_to (group), method: :delete,
-				data: {confirm: "Are you sure ?"}, remote: true, class: "btn btn-danger" do %>
+        data: {toggle: "modal", target: "#modal-group", whatever: "#{data}"}, style: "float:right;" )%>
+				<%= link_to (group), method: :delete, data: {confirm: "Are you sure ?"}, remote: true,
+				class: "btn btn-danger" do %>
 				<i class="fa fa-times">Delete</i>
 				<% end %>
 			</td>
 		</tr>
 		<% end %>
 		<% end %>
+		<tr>
+			<td colspan="4">
+				<%= link_to submit_tournament_path(@tournament),data: {confirm: "Bạn có chắc chắn thêm các đội trên vào giải đấu"}, method: :post, class: "btn btn-info" do %>
+						<i class="fa fa-times">Submit</i>
+				<% end %>
+			</td>
+		</tr>
 	</tbody>
 </table>
 <script type="text/javascript">

@@ -5,6 +5,10 @@
 			<div class="form-group">
 				<%= f.text_field :name, class: "form-control", placeholder: "tournament's name" %>
 			</div>
+			<div class="form-group">
+				<%= f.text_field :num_of_teams,type: "number", min: 0,
+				 class: "form-control", placeholder: "tournament's number of teams" %>
+			</div>
 			<%= render partial: 'shared/error_validates', locals: {obj: obj} %>
 			<div class="form-group">
 				<%= f.submit "Add", class: "btn btn-primary" %>
@@ -14,6 +18,7 @@
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 	$('#modal').on('show.bs.modal', function getvalue (event) {
 		var button = $(event.relatedTarget); 
@@ -21,16 +26,24 @@
 		var data = eval('(' + recipient + ')');
 		if ( data != null ){
 			var $form = $(this).find("form");
-			var $input = $form.find("input[name='_method']");
+			var str = "#" + data.obj + "_name"
+			var $input_name = $(str)
+			var $input_num_of_teams = $("#tournament_num_of_teams");
+			var $input_method = $form.find("input[name='_method']");
 			if ( data.Method === 'post' ) {
-				$form.attr("action", '/tournaments');
-				$input.remove();
+				$input_name.attr("placeholder", data.obj + "'s name");
+				$input_name.val("");
+				$input_num_of_teams.val("");
+				$form.find("input[type='submit']").val("Add")
+				$form.attr("action", '/' + data.obj + 's');
+				$input_method.remove();
 			} else {
 				$form.find("input[type='submit']").val("Edit")
-				$form.attr("action", '/tournaments/' + data.Id);
+				$form.attr("action", '/' + data.obj + 's/' + data.Id);
 				$form.find("input[name='authenticity_token']").val(data.Token);
-				$("#tournament_name").val(data.Name);
-				if($input.size() == 0){
+				$input_name.val(data.Name);
+				$input_num_of_teams.val(data.num_of_teams);
+				if($input_method.size() == 0){
 					$form.prepend('<input type="hidden" name="_method" value="put" />');
 				}
 			}

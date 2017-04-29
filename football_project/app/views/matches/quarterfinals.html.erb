@@ -1,0 +1,27 @@
+<table class="schedule table" style="text-align: center;">
+
+	<tr>
+		<td colspan="7" align="center">
+			Win
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7" align="center">
+			CK1-CK2
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3"" align="center">Bk1</td>
+		<td></td>
+		<td colspan="3"" align="center">Bk2</td>
+	</tr>
+	<tr>
+		<% @tournament.groups.each do |group| %>
+		<% binding.pry %>
+			<% (group.get_teams_with_rank 1).first.get_quarterfinals_matches %>
+		<% end %>
+	</tr>
+</table>
+<script type="text/javascript">
+	<%= render(:partial => 'update_match', :formats => [:js]) %>
+</script>
