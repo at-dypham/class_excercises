@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sinatra Test</title>
+  <style type="text/css">
+    h3{color: green}
+    
+  </style>
+</head>
+<body>
+  
+  <form method="post" action="/say_something">
+    Name: 
+    <br> 
+    <input type="text" name="name">
+    <br>
+    Say some thing: 
+    <br> 
+    <input type="text" name="say_something">
+    <br>
+    <button type="submit" name="button">Submit</button>
+    <h3><%=@message %></h3> 
+  </form>
+</body>
+</html>
