@@ -1,0 +1,8 @@
+#list-notes {
+      margin-top: 5%;
+    }
+
+    .done-sign span{
+      font-size: 1.5em;
+      color: green;
+    }
